@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "module": "commonjs",
+        "lib": [
+            "ES2016"
+        ],
+        "target": "es6",
+        "declaration": true,
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "baseUrl": "../dist",
+        "resolveJsonModule": true
+    },
+    "include": [
+        "./src/index.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "./src/__tests__/*"
+    ]
+}

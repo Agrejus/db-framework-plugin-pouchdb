@@ -1,0 +1,6 @@
+# dependencies
+node_modules
+*-db*/ 
+__PEF*
+/dist/
+*PEF-REFERENCE*
