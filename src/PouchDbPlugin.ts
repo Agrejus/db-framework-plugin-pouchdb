@@ -6,11 +6,11 @@ import memoryAdapter from 'pouchdb-adapter-memory';
 PouchDB.plugin(findAdapter);
 PouchDB.plugin(memoryAdapter);
 
-export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends IDbRecord<TDocumentType>> implements IDbPlugin<TDocumentType, TEntityBase> {
+export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends IDbRecord<TDocumentType>, TDbPluginOptions extends IDbPluginOptions = IDbPluginOptions> implements IDbPlugin<TDocumentType, TEntityBase> {
 
-    private readonly _options: IDbPluginOptions;
+    private readonly _options: TDbPluginOptions;
 
-    constructor(options: IDbPluginOptions) {
+    constructor(options: TDbPluginOptions) {
         this._options = options;
     }
 
@@ -19,7 +19,7 @@ export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends IDb
         return new PouchDB<TEntityBase>(this._options.dbName, options);
     }
 
-    protected async doWork<T>(action: (db: PouchDB.Database<TEntityBase>) => Promise<T>, shouldClose: boolean = true) {
+    async doWork<T>(action: (db: PouchDB.Database<TEntityBase>) => Promise<T>, shouldClose: boolean = true) {
         const db = this.createDb();
         const result = await action(db);
 
@@ -148,5 +148,4 @@ export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends IDb
 
         return result;
     }
-
 }
