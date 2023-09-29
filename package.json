@@ -1,6 +1,6 @@
 {
   "name": "@agrejus/db-framework-plugin-pouchdb",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "description": "PouchDB Database plugin for DB Framework",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
