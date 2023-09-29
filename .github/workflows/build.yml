@@ -24,10 +24,19 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: 14
           
+      - name: Install
+        run: npm install
+
       # Runs a single command using the runners shell
       - name: Build
         run: npm run build:ci
+
+      - uses: JS-DevTools/npm-publish@v1
+        name: Publish
+        with:
+          access: public
+          token: ${{ secrets.NPM_TOKEN }}

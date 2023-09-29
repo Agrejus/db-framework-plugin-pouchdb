@@ -4,3 +4,4 @@ node_modules
 __PEF*
 /dist/
 *PEF-REFERENCE*
+package-lock.json
