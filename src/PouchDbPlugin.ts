@@ -8,15 +8,15 @@ PouchDB.plugin(memoryAdapter);
 
 export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends IDbRecord<TDocumentType>, TDbPluginOptions extends IDbPluginOptions = IDbPluginOptions> implements IDbPlugin<TDocumentType, TEntityBase> {
 
-    private readonly _options: TDbPluginOptions;
+    protected readonly options: TDbPluginOptions;
 
     constructor(options: TDbPluginOptions) {
-        this._options = options;
+        this.options = options;
     }
 
     protected createDb() {
-        const { dbName, ...options } = this._options
-        return new PouchDB<TEntityBase>(this._options.dbName, options);
+        const { dbName, ...options } = this.options
+        return new PouchDB<TEntityBase>(this.options.dbName, options);
     }
 
     async doWork<T>(action: (db: PouchDB.Database<TEntityBase>) => Promise<T>, shouldClose: boolean = true) {
