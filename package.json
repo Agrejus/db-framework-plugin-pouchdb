@@ -51,7 +51,7 @@
     "ts-jest": "^28.0.2",
     "ts-node": "^10.8.0",
     "typescript": "5.0.2",
-    "@agrejus/db-framework": "file:../db-framework"
+    "@agrejus/db-framework": "0.0.1-beta.0"
   },
   "dependencies": {
     "pouchdb": ">=8.0.1",
