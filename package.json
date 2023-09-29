@@ -8,6 +8,7 @@
   "scripts": {
     "test": "jest --runInBand --silent --no-cache",
     "build": "npm run clean && tsc",
+    "build:ci": "tsc",
     "clean": "./node_modules/.bin/rimraf ./dist/*",
     "performance": "ts-node ./performance/tests/performance.ts",
     "test-grounds": "ts-node ./performance/tests/testing-grounds.ts"
