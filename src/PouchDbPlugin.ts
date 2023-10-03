@@ -31,11 +31,11 @@ export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends IDb
     }
 
     async destroy() {
-        return await this.doWork(async w => await w.destroy(), false);
+        return await this.doWork(w => w.destroy(), false);
     }
 
     async all(payload?: IQueryParams<TDocumentType>) {
-        return await this.doWork(async w => {
+        const result = await this.doWork(w => {
             try {
                 const findOptions: PouchDB.Find.FindRequest<TEntityBase> = {
                     selector: {},
@@ -45,22 +45,24 @@ export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends IDb
                     findOptions.selector = payload
                 }
 
-                const result = await w.find(findOptions)
-
-                return result.docs as TEntityBase[];
+                return w.find(findOptions) as Promise<PouchDB.Find.FindResponse<TEntityBase>>
             } catch (e) {
 
                 if ('message' in e && e.message.includes("database is closed")) {
                     throw e;
                 }
 
-                return [] as TEntityBase[];
+                return Promise.resolve<PouchDB.Find.FindResponse<TEntityBase>>({
+                    docs: []
+                });
             }
-        })
+        });
+
+        return result.docs as TEntityBase[];
     }
 
     async query(request: PouchDB.Find.FindRequest<TEntityBase>) {
-        return await this.doWork(async w => await w.find(request))
+        return await this.doWork(w => w.find(request))
     }
 
     async getStrict(...ids: string[]) {
