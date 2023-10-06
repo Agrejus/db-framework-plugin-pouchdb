@@ -43,17 +43,14 @@
     "directory-tree": "^3.3.0",
     "jest": "^28.1.0",
     "lodash": "^4.17.21",
-    "pouchdb": "^8.0.1",
-    "pouchdb-adapter-memory": "^8.0.1",
-    "pouchdb-find": "^8.0.1",
     "rimraf": "^3.0.2",
     "semver": "^7.3.7",
     "ts-jest": "^28.0.2",
     "ts-node": "^10.8.0",
-    "typescript": "5.0.2",
-    "@agrejus/db-framework": "0.0.1-beta.0"
+    "typescript": "5.0.2"
   },
   "dependencies": {
+    "@agrejus/db-framework": "0.0.1-beta.2",
     "pouchdb": ">=8.0.1",
     "pouchdb-adapter-memory": ">=8.0.1",
     "pouchdb-find": ">=8.0.1"
