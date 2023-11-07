@@ -4,6 +4,7 @@ import findAdapter from 'pouchdb-find';
 import memoryAdapter from 'pouchdb-adapter-memory';
 import { validateAttachedEntity } from './validator';
 import { PouchDbRecord } from './types';
+import { Transaction } from './Transaction';
 
 PouchDB.plugin(findAdapter);
 PouchDB.plugin(memoryAdapter);
@@ -26,9 +27,15 @@ export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends Pou
         return new PouchDB<TEntityBase>(this.options.dbName, options);
     }
 
+    private async _processTransaction<T>(action: (db: PouchDB.Database<TEntityBase>) => Promise<T>): Promise<{ result: T, db: PouchDB.Database<TEntityBase> }> {
+        return new Promise<{ result: T, db: PouchDB.Database<TEntityBase> }>((resolve, reject) => {
+            const transaction = new Transaction(resolve, reject, action, this.createDb.bind(this));
+            transaction.execute();
+        });
+    }
+
     async doWork<T>(action: (db: PouchDB.Database<TEntityBase>) => Promise<T>, shouldClose: boolean = true) {
-        const db = this.createDb();
-        const result = await action(db);
+        const { result, db } = await this._processTransaction(action);
 
         if (shouldClose) {
             await db.close();
@@ -206,28 +213,6 @@ export class PouchDbPlugin<TDocumentType extends string, TEntityBase extends Pou
         }
 
         return false
-    }
-
-    async prepareAdditions(...entities: TEntityBase[]) {
-        const result: { ok: boolean, docs: TEntityBase[], errors: string[] } = {
-            ok: true,
-            docs: [],
-            errors: []
-        }
-
-        for (const entity of entities) {
-            if (!!entity["_rev"]) {
-                result.errors.push('Cannot add entity that is already in the database, please modify entites by reference or attach an existing entity');
-                result.ok = false;
-            }
-        }
-
-        if (result.ok === false) {
-            return result;
-        }
-
-        result.docs = entities;
-        return result;
     }
 
     prepareDetachments(...entities: TEntityBase[]): { ok: boolean; errors: string[]; docs: TEntityBase[]; } {
